@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
+import logo from "./logo.svg";
+import {
+  LoaderComp,
+  FooterComp,
+  WelcomeComp,
+  NavBarComp,
+  PageNotFound,
+  LoginComp,
+} from "./components";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginFarmerComp from "./components/LoginFarmerComp";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="container">
+        <NavBarComp />
+        <Routes>
+          <Route path="/" element={<WelcomeComp></WelcomeComp>}></Route>
+          <Route path="/marketplace" element={<div>Marketplace</div>}></Route>
+          <Route path="/login" element={<LoginComp></LoginComp>}>
+            <Route path="/login/farmer" element={<LoginFarmerComp></LoginFarmerComp>}></Route>
+            <Route path="/login/buyer" element={<div>Coming Soon</div>}></Route>
+          </Route>
+          <Route path="*" element={<PageNotFound></PageNotFound>}></Route>
+        </Routes>
+        <FooterComp />
+      </div>
+    </BrowserRouter>
   );
 }
 
