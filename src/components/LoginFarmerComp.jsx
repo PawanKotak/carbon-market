@@ -1,25 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
+const BACKEND_URL = 'http://localhost:4000';
 
 const LoginFarmerComp = () => {
   const [nftImage, setNFTImage] = useState();
   const [loaded, setLoaded] = useState(true);
   const { authenticate, isAuthenticated, user } = useMoralis();
+  const [ipfsData, setIPFSData] = useState();
 
-  const handleImageGenerate = () => {
-    console.log("TEST");
-    setLoaded(false);
-    axios.get("http://localhost:4000").then((resp) => {
-      const imageURL = resp.data.imageURL;
-      setNFTImage(imageURL + "?" + Math.random());
-      //setNFTImage(imageURL)
-      setLoaded(true);
-      //fetch(imageURL);
-
-      
-    });
-  };
 
   useEffect(() => {}, []);
 
@@ -31,13 +20,22 @@ const LoginFarmerComp = () => {
     );
   }
 
+  const handleImageGenerate = () => {
+    console.log("TEST");
+    setLoaded(false);
+    axios.get(BACKEND_URL).then((resp) => {
+      const imageURL = resp.data.imageURL;
+      setNFTImage(imageURL + "?" + Math.random());      
+      setLoaded(true);
+    });
+  };
+
   const submitHandler = (event) =>{
     console.log(`Submit Handler`);
     event.preventDefault();
-
-    axios.post('http://localhost:4000')
-    .then((data)=>{
-      console.log("TEST")
+    axios.post(BACKEND_URL)
+    .then((data)=>{      
+      setIPFSData(data);
     })
   }
 
@@ -51,12 +49,7 @@ const LoginFarmerComp = () => {
           type="number"
           placeholder="Enter carbon credit"
         ></input>
-      </div>
-      {/* <div className="form-group">
-                <label forHTML="formFile" className="form-label">NFT Art file</label>
-                <input className="form-control" type="file" id="formFile"></input>
-            </div> */}
-
+      </div>      
       <div className="form-group w-25 mt-2">
         <input
           className="form-control btn btn-primary col"
@@ -71,6 +64,9 @@ const LoginFarmerComp = () => {
 
       <div className="form-group mt-2">
         <input className="form-control btn btn-primary" type="submit"></input>
+      </div>
+      <div className="form-group mt-2">
+            {JSON.stringify(ipfsData)}
       </div>
     </form>
   );
