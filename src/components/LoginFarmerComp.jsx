@@ -15,7 +15,7 @@ const LoginFarmerComp = () => {
       setNFTImage(imageURL + "?" + Math.random());
       //setNFTImage(imageURL)
       setLoaded(true);
-      fetch(imageURL);
+      //fetch(imageURL);
 
       
     });
@@ -31,8 +31,18 @@ const LoginFarmerComp = () => {
     );
   }
 
+  const submitHandler = (event) =>{
+    console.log(`Submit Handler`);
+    event.preventDefault();
+
+    axios.post('http://localhost:4000')
+    .then((data)=>{
+      console.log("TEST")
+    })
+  }
+
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className="form-group">
         <label forHTML="carbonpoints"> Carbon Credit</label>
         <input
