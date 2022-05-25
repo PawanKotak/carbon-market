@@ -10,15 +10,15 @@ const LoginFarmerComp = () => {
   const [ipfsData, setIPFSData] = useState();
 
 
-  useEffect(() => {}, []);
+  
 
-  if (!isAuthenticated) {
-    return (
-      <div>
-        <button onClick={() => authenticate()}>Authenticate</button>
-      </div>
-    );
-  }
+  // if (!isAuthenticated) {
+  //   return (
+  //     <div>
+  //       <button onClick={() => authenticate()}>Authenticate</button>
+  //     </div>
+  //   );
+  // }
 
   const handleImageGenerate = () => {
     console.log("TEST");
@@ -49,7 +49,55 @@ const LoginFarmerComp = () => {
           type="number"
           placeholder="Enter carbon credit"
         ></input>
-      </div>      
+      </div>   
+      <div className="form-group">
+        <label> Mobile</label>
+        <input
+          className="form-control"
+          id="mobile"          
+          placeholder="Enter phone number">
+        </input>  
+      </div>   
+      <div className="form-group">
+        <label>Name</label>
+        <input
+          className="form-control"
+          id="name"
+          placeholder="Enter name"
+        >
+        </input>
+      </div>
+      <div className="form-group">
+         <label>Aadhar Card Number</label>
+         <input
+          className="form-control"
+          id="aadharnum"
+         ></input>
+      </div>
+      <div className="form-group">
+        <label>State</label>
+        <select className="form-control">
+          <option>---Select State----</option>
+          <option>ANDHRA PRADESH</option>
+          <option>ASSAM</option>
+          <option>BIHAR</option>
+          <option>CHANDIGARH</option>
+          <option>DELHI</option>
+          <option>GOA</option>
+          <option>GUJARAT</option>
+          <option>HARYANA</option>
+          <option>KARNATAKA</option>
+        </select>
+
+      </div>
+      <div className="form-group">
+        <label>Gender</label>
+        <select className="form-control">
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+
+      </div>
       <div className="form-group w-25 mt-2">
         <input
           className="form-control btn btn-primary col"
