@@ -2,11 +2,6 @@
   "name": "vol-carbon-market",
   "version": "0.1.0",
   "private": true,
-  "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.6",
-    "ethers": "^5.6.6",
-    "hardhat": "^2.9.5"
-  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
@@ -22,12 +17,7 @@
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
-    "@alch/alchemy-web3": "^1.4.2",
-    "@openzeppelin/contracts": "^4.6.0",
-    "dotenv": "^16.0.1",
-    "ipfs-http-client": "^56.0.3",
-    "web3": "^1.7.3"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
