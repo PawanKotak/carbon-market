@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 const NavBarComp = () => {
   return(  
-    <header class="sticky-top d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <header class="bg-white sticky-top d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
     
       <Link to="/" className="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
         <b>CO2</b>
