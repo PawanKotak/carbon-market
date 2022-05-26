@@ -3,11 +3,16 @@ import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 const BACKEND_URL = "http://localhost:4000";
 
+const config = {
+  headers: { "content-type": "application/json" },
+};
+
 const LoginFarmerComp = () => {
   const [nftImage, setNFTImage] = useState();
   const [loaded, setLoaded] = useState(true);
   const { authenticate, isAuthenticated, user } = useMoralis();
   const [ipfsData, setIPFSData] = useState();
+  const [cc,setCC] = useState(0);
 
   // if (!isAuthenticated) {
   //   return (
@@ -20,7 +25,10 @@ const LoginFarmerComp = () => {
   const handleImageGenerate = () => {
     console.log("TEST");
     setLoaded(false);
-    axios.get(BACKEND_URL).then((resp) => {
+    const inputData = {
+      text: `CC:${cc} T:${new Date().getTime()}`
+    }
+    axios.post(BACKEND_URL + "/getImage",inputData, config).then((resp) => {
       const imageURL = resp.data.imageURL;
       setNFTImage(imageURL + "?" + Math.random());
       setLoaded(true);
@@ -43,9 +51,7 @@ const LoginFarmerComp = () => {
               price:price.value,
               gender:gender.value
              }
-    const config = {
-      headers: { "content-type": "application/json" },
-    };
+   
     console.table(formdata);
     axios.post(BACKEND_URL,formdata,config).then((data) => {
       setIPFSData(data);
@@ -61,6 +67,7 @@ const LoginFarmerComp = () => {
           id="carbonpoints"
           type="number"
           placeholder="Enter carbon credit"
+          onChange={(e)=>setCC(e.target.value)}
         ></input>
       </div>
      
