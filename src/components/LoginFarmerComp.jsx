@@ -8,7 +8,7 @@ const config = {
 };
 
 const LoginFarmerComp = () => {
-  const [nftImage, setNFTImage] = useState();
+  const [nftImage, setNFTImage] = useState('http://localhost:4000/defaultImage.png');
   const [loaded, setLoaded] = useState(true);
   const { authenticate, isAuthenticated, user } = useMoralis();
   const [ipfsData, setIPFSData] = useState();
@@ -152,8 +152,8 @@ const LoginFarmerComp = () => {
         ></input>
       </div>
 
-      <div className="form-group">
-        <img src={nftImage} alt="" className="col img-thumbnail w-25 h-25" />
+      <div className="form-group" style={{height: '50vh'}}>
+        <img src={nftImage} alt="" className="col img-thumbnail w-25" style={{height:'100%'}} />
       </div>
       {/* <div className="form-group">
         <label for="formFile" class="form-label">
