@@ -9,7 +9,7 @@ const WelcomeComp = () => {
             Maketplace to buy carbon credit from farmer and help them to continue sustainable farming practice.
             
           </p>
-          <Link class="btn btn-outline-secondary" to="/marketplace">
+          <Link class="btn btn-outline-secondary" to="/login/marketplace">
             Let's get started
           </Link>
         </div>

@@ -1,8 +1,13 @@
 const FooterComp = () => {
   return (
-    <footer className="footer mt-auto py-3 bg-light">
-      <span class="text-muted">Copright with STG Team: TimeLimitExceed.</span>
+    <> 
+    <footer className="bg-light">
+      <div className="container ">  
+        <span className="text-muted">Copright with STG Team: TimeLimitExceed.</span>
+      </div>
     </footer>
+    
+    </>
   );
 };
 

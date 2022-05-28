@@ -82,21 +82,7 @@ const LoginFarmerComp = () => {
 
   return (
     <>
-      {typeof window.ethereum !== "undefined" ? (
-        <div class="alert alert-primary" role="alert">
-          Meta Mask extension is already installed!
-        </div>
-      ) : (
-        <div class="alert alert-danger" role="alert">
-          Meta Mask extension need to be installed or view in chrome browser!{" "}
-          <a
-            target="_blank"
-            href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
-          >
-            Meta Mask Link
-          </a>
-        </div>
-      )}
+     
       <form onSubmit={submitHandler}>
         <div className="row">
           <div className="form-group col-4">
@@ -173,7 +159,7 @@ const LoginFarmerComp = () => {
             <label>META MASK ADDRESS</label>
             <div class="form-horizontal">
               <div class="input-group">
-                  <input type="text" class="form-control" value={mma} ></input>
+                  <input type="text" class="form-control" value={mma} id="mmaddress" ></input>
                   <span class="input-group-btn bg-secondary" >
                       <button class="btn btn-default text-white" type="button" onClick={connectMMA}>GET MMA</button>
                   </span>
