@@ -8,10 +8,19 @@ const NavBarComp = () => {
       </Link>
 
       <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        {["Home", "Features", "Tutorial","FAQs", "About"].map((item,index)=>{
+        {[{ title: "Home",
+            url: "/"},
+            { title: "NFT Details",
+            url: "/tokenowner"}, 
+            { title:"Tutorial",
+            url: "#"},
+            { title:"FAQs",
+            url: "#"},
+            { title:"About",
+            url: "#"}].map((item,index)=>{
 
           return (            
-            <li key={index}><a href="#" class="nav-link px-2 link-dark">{item}</a></li>
+            <li key={index}><Link to={item.url} class="nav-link px-2 link-dark">{item.title}</Link></li>
           )
         })}
       </ul>

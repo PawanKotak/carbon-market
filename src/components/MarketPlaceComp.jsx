@@ -1,101 +1,124 @@
-import { Card, Button, ListGroup, ListGroupItem } from "react-bootstrap";
-import { React, useState } from "react";
+import { Card, Button, ListGroup, ListGroupItem, Modal } from "react-bootstrap";
+import { React, useEffect, useState } from "react";
+import axios from "axios";
+
+
+const BACKEND_URL = "http://localhost:4000";
+const config = {
+  headers: { "content-type": "application/json" },
+};
+
 const MaketPlaceComp = () => {
-  const [prodDetails, setProdDetails] = useState([
-    {
-      title: "ABE",
-      image:
-        "https://ipfs.io/ipfs/QmWJ7BuPaWWtxmJSxdzbfPYCcrfqnyUtwP56amgCEmgjD5",
-      cc: 88,
-      country: "IND",
-    },
-    {
-      title: "DFE",
-      image:
-        "https://ipfs.io/ipfs/QmPAAkK2BJFyPDzSyNNPNdQnR8VR2AEp6R9Nnxt5UKqifv",
-      cc: 54,
-      country: "IND",
-    },
-    {
-      title: "QWE",
-      image:
-        "https://bafybeibphrqfwnetgzyk3eouk3uj7uknv4zc2wizu23a74je6rpjnqyyjm.ipfs.infura-ipfs.io",
-      cc: 45,
-      country: "IND",
-    },
-    {
-      title: "YTRE",
-      image:
-        "https://ipfs.io/ipfs/QmPAAkK2BJFyPDzSyNNPNdQnR8VR2AEp6R9Nnxt5UKqifv",
-      cc: 65,
-      country: "IND",
-    },
-    {
-      title: "CDSE",
-      image:
-        "https://ipfs.io/ipfs/QmWJ7BuPaWWtxmJSxdzbfPYCcrfqnyUtwP56amgCEmgjD5",
-      cc: 43,
-      country: "IND",
-    },
-    {
-      title: "ABE",
-      image:
-        "https://bafybeibphrqfwnetgzyk3eouk3uj7uknv4zc2wizu23a74je6rpjnqyyjm.ipfs.infura-ipfs.io",
-      cc: 76,
-      country: "IND",
-    },
-    {
-      title: "DFE",
-      image:
-        "https://ipfs.io/ipfs/QmPAAkK2BJFyPDzSyNNPNdQnR8VR2AEp6R9Nnxt5UKqifv",
-      cc: 56,
-      country: "IND",
-    },
-    {
-      title: "QWE",
-      image:
-        "https://bafybeibphrqfwnetgzyk3eouk3uj7uknv4zc2wizu23a74je6rpjnqyyjm.ipfs.infura-ipfs.io",
-      cc: 89,
-      country: "IND",
-    },
-    {
-      title: "YTRE",
-      image:
-        "https://ipfs.io/ipfs/QmPAAkK2BJFyPDzSyNNPNdQnR8VR2AEp6R9Nnxt5UKqifv",
-      cc: 67,
-      country: "IND",
-    },
-    {
-      title: "CDSE",
-      image:
-        "https://ipfs.io/ipfs/QmWJ7BuPaWWtxmJSxdzbfPYCcrfqnyUtwP56amgCEmgjD5",
-      cc: 90,
-      country: "IND",
-    },
-  ]);
+  const [prodDetails, setProdDetails] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectTokenID, setSelectedTokenID] = useState(-1);
+  const [amountEth, selectAmountEth] = useState(0);
+  const [show, setShow] = useState(false);
+  const [addressTo ,setAddressTo] = useState(null);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    (async () => {
+      const result = await axios.get("http://localhost:4000/marketnft");
+      console.log(result);
+      setProdDetails(result?.data?.data);
+    })();
+  }, []);
+
+  const showProductDet = (productDetails, tokenID) => {
+    handleShow();
+    setSelectedProduct(productDetails);
+    setSelectedTokenID(tokenID);
+    selectAmountEth(0);
+    console.log(productDetails, tokenID);
+  };
+
+  const purchaseProduct = async() => {
+    let formdata = {
+       tokenID:selectTokenID,
+       amount:amountEth,
+       addressto:addressTo
+    }
+    const result = await axios.post(BACKEND_URL + "/buyproduct", formdata, config)
+    handleClose();  
+  }
+
   return (
     <div className="row p-3">
       {prodDetails &&
-        prodDetails.map((item) => (
-          <Card className="col-md-4 m-3" style={{ width: "18rem" }}>
-            <Card.Img variant="top" src={item.image} />
+        prodDetails.map((item, index) => (
+          <Card
+            key={index + 1}
+            className="col-md-4 m-3"
+            style={{ width: "18rem" }}
+          >
+            <Card.Img variant="top" src={item?.image} />
             <Card.Body>
-              <Card.Title>{item.title}</Card.Title>
-              <Card.Text>{item.title}</Card.Text>
+              <Card.Title>{item?.title}</Card.Title>
+              <Card.Text>{item?.title}</Card.Text>
             </Card.Body>
             <ListGroup className="list-group-flush">
               <ListGroupItem>
-                <b>Carbon Credit</b>: {item.cc}
+                <b>Carbon Credit</b>: {item?.attributes[5].value}
               </ListGroupItem>
               <ListGroupItem>
-                <b>Country</b>: {item.country}
+                <b>Place</b>: {item?.attributes[2].value}
+              </ListGroupItem>
+              <ListGroupItem>
+                <b>Country</b>: {item?.attributes[3].value}
               </ListGroupItem>
             </ListGroup>
             <Card.Body>
-              <Button variant="primary">BUY</Button>
+              <Button
+                variant="primary"
+                onClick={() => showProductDet(item, index + 1)}
+                role="button"
+              >
+                BUY
+              </Button>
             </Card.Body>
           </Card>
         ))}
+
+      {prodDetails && (
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Product Details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ListGroup className="list-group-flush">
+              <ListGroupItem>
+                <b>Token ID</b>: {selectTokenID}
+              </ListGroupItem>
+              <ListGroupItem>
+                <b>Carbon Credit</b>: {selectedProduct?.attributes[5].value}
+              </ListGroupItem>
+              <ListGroupItem>
+                <b>Place</b>: {selectedProduct?.attributes[2].value}
+              </ListGroupItem>
+              <ListGroupItem>
+                <b>Country</b>: {selectedProduct?.attributes[3].value}
+              </ListGroupItem>
+              <ListGroupItem>
+              <span><b> Ethereum</b></span><input type="number" min="1" max="5" value={amountEth} onChange={(e)=>selectAmountEth(e.target.value)}></input>
+                
+              </ListGroupItem>
+              <ListGroupItem>
+              <span><b> Address</b></span><input type="text" onChange={(e)=>setAddressTo(e.target.value)}></input>                
+              </ListGroupItem>
+            </ListGroup>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={purchaseProduct}>
+              Confirm Purchase
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 };

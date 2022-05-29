@@ -10,11 +10,11 @@ const LoginComp = () => {
       <div className="col-md-12">
       {typeof window.ethereum !== "undefined" ? (
         <div class="alert alert-primary" role="alert">
-          Meta Mask extension is already installed!
+          Meta Mask extension is detected!
         </div>
       ) : (
         <div class="alert alert-danger" role="alert">
-          Meta Mask extension need to be installed or view in chrome browser!{" "}
+          Meta Mask extension needs to be installed or view in chrome browser!{" "}
           <a
             target="_blank"
             href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en"
