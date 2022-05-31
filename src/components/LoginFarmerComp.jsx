@@ -159,7 +159,7 @@ const LoginFarmerComp = () => {
             <label>META MASK ADDRESS</label>
             <div class="form-horizontal">
               <div class="input-group">
-                  <input type="text" class="form-control" value={mma} id="mmaddress" ></input>
+                  <input type="text" class="form-control" value={mma} id="mmaddress" onChange={(e)=>setMMA(e.target.value)} ></input>
                   <span class="input-group-btn bg-secondary" >
                       <button class="btn btn-default text-white" type="button" onClick={connectMMA}>GET MMA</button>
                   </span>
