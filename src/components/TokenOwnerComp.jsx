@@ -31,7 +31,7 @@ const TokenOwnerComp = () => {
     <>
       <h3>Get Token Owner</h3>
       <form onSubmit={submitHandler}>
-        <div className="form-group col-6">
+        <div className="form-group col-12">
           <label forHTML="tokenid">Token ID</label>
           <div class="form-horizontal">
             <div class="input-group">
@@ -44,7 +44,7 @@ const TokenOwnerComp = () => {
             </div>
           </div>
         </div>
-        <div className="form-group col-6">
+        <div className="form-group col-12">
           <label>Owner Address</label>
           <labe class="form-control"> {ownerAddress} </labe>
         </div>

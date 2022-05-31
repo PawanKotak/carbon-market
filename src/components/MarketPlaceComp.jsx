@@ -14,7 +14,8 @@ const MaketPlaceComp = () => {
   const [selectTokenID, setSelectedTokenID] = useState(-1);
   const [amountEth, selectAmountEth] = useState(0);
   const [show, setShow] = useState(false);
-  const [addressTo ,setAddressTo] = useState(null);
+  const [addressTo, setAddressTo] = useState(null);
+  const [privateKey, setPrivateKey] = useState(null);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -34,15 +35,23 @@ const MaketPlaceComp = () => {
     console.log(productDetails, tokenID);
   };
 
-  const purchaseProduct = async() => {
+  const purchaseProduct = async () => {
+
+    console.log('Number to HEx');
+    
     let formdata = {
-       tokenID:selectTokenID,
-       amount:amountEth,
-       addressto:addressTo
-    }
-    const result = await axios.post(BACKEND_URL + "/buyproduct", formdata, config)
-    handleClose();  
-  }
+      tokenID: selectTokenID,
+      amount: amountEth,
+      addressto: addressTo,
+      privatekey: privateKey
+    };
+    const result = await axios.post(
+      BACKEND_URL + "/buyproduct",
+      formdata,
+      config
+    );
+    handleClose();
+  };
 
   return (
     <div className="row p-3">
@@ -60,13 +69,13 @@ const MaketPlaceComp = () => {
             </Card.Body>
             <ListGroup className="list-group-flush">
               <ListGroupItem>
-                <b>Carbon Credit</b>: {item?.attributes[5].value}
+                <b>Carbon Credit</b>: {item?.attributes[5]?.value}
               </ListGroupItem>
               <ListGroupItem>
-                <b>Place</b>: {item?.attributes[2].value}
+                <b>Place</b>: {item?.attributes[2]?.value}
               </ListGroupItem>
               <ListGroupItem>
-                <b>Country</b>: {item?.attributes[3].value}
+                <b>Country</b>: {item?.attributes[3]?.value}
               </ListGroupItem>
             </ListGroup>
             <Card.Body>
@@ -101,11 +110,35 @@ const MaketPlaceComp = () => {
                 <b>Country</b>: {selectedProduct?.attributes[3].value}
               </ListGroupItem>
               <ListGroupItem>
-              <span><b> Ethereum</b></span><input type="number" min="1" max="5" value={amountEth} onChange={(e)=>selectAmountEth(e.target.value)}></input>
-                
+                <span>
+                  <b> Ethereum</b>
+                </span>
+                <input
+                  type="number"
+                  min="1"
+                  max="5"
+                  value={amountEth}
+                  onChange={(e) => selectAmountEth(e.target.value)}
+                ></input>
               </ListGroupItem>
               <ListGroupItem>
-              <span><b> Address</b></span><input type="text" onChange={(e)=>setAddressTo(e.target.value)}></input>                
+                <span>
+                  <b> Address To</b>
+                </span>
+                <input
+                  type="text"
+                  onChange={(e) => setAddressTo(e.target.value)}
+                ></input>
+              </ListGroupItem>
+
+              <ListGroupItem>
+                <span>
+                  <b> PRIVATE KEY TRNSATION </b>
+                </span>
+                <input
+                  type="text"
+                  onChange={(e) => setPrivateKey(e.target.value)}
+                ></input>
               </ListGroupItem>
             </ListGroup>
           </Modal.Body>
