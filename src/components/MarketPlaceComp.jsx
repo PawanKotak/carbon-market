@@ -19,7 +19,7 @@ const MaketPlaceComp = () => {
   const [allProdDetails, setAllProdDetails] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectTokenID, setSelectedTokenID] = useState(-1);
-  const [amountEth, selectAmountEth] = useState(0);
+  const [amountEth, selectAmountEth] = useState(1);
   const [show, setShow] = useState(false);
   const [addressTo, setAddressTo] = useState(null);
   const [privateKey, setPrivateKey] = useState(null);
@@ -40,7 +40,7 @@ const MaketPlaceComp = () => {
     handleShow();
     setSelectedProduct(productDetails);
     setSelectedTokenID(tokenID);
-    selectAmountEth(0);
+    selectAmountEth(1);
     console.log(productDetails, tokenID);
   };
 
