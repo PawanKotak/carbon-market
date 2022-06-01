@@ -122,7 +122,7 @@ const MaketPlaceComp = () => {
             <Card.Body>
               <Button
                 variant="primary"
-                onClick={() => showProductDet(item, index + 1)}
+                onClick={() => showProductDet(item, item?.tokenID)}
                 role="button"
               >
                 BUY
