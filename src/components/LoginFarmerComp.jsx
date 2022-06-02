@@ -1,6 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Alert } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
 import { useMoralis } from "react-moralis";
+import "./../App.css";
+import LoaderCustComp from "./LoaderCustComp";
 const BACKEND_URL = "http://localhost:4000";
 
 const config = {
@@ -15,7 +19,9 @@ const LoginFarmerComp = () => {
   const { authenticate, isAuthenticated, user } = useMoralis();
   const [ipfsData, setIPFSData] = useState();
   const [cc, setCC] = useState(0);
-  const [mma,setMMA] = useState();
+  const [mma, setMMA] = useState();
+  const [loader, setLoader] = useState(false);
+  const [aadhar,setAadhar] =useState();
 
   // if (!isAuthenticated) {
   //   return (
@@ -28,6 +34,7 @@ const LoginFarmerComp = () => {
   const handleImageGenerate = () => {
     console.log("TEST");
     setLoaded(false);
+
     const inputData = {
       text: `CC:${cc} T:${new Date().getTime()}`,
     };
@@ -39,6 +46,7 @@ const LoginFarmerComp = () => {
   };
 
   const submitHandler = (event) => {
+    setLoader(true);
     console.log(`Submit Handler`, event.target.elements);
     const {
       carbonpoints,
@@ -71,21 +79,33 @@ const LoginFarmerComp = () => {
     console.table(formdata);
     axios.post(BACKEND_URL, formdata, config).then((data) => {
       setIPFSData(data);
+      setLoader(false);
     });
   };
 
   const connectMMA = async () => {
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
     console.log(accounts);
     setMMA(accounts[0]);
+  };
+
+  const getCCHandler = async () => {
+    const result = await axios.get(`http://localhost:5000/users?aadhar_like=${aadhar}`);
+    console.log(`result ${JSON.stringify(result.data)}`);
+    if(Array.isArray(result.data) && result.data.length>0){
+      console.log("asdf",result.data[0].cc);
+      setCC( result.data[0].cc);
+    }
   }
 
   return (
     <>
-     
+      {loader && <LoaderCustComp></LoaderCustComp>}
       <form onSubmit={submitHandler}>
         <div className="row">
-          <div className="form-group col-4">
+          <div className="form-group col-3">
             <label forHTML="carbonpoints"> CARBON CREDIT</label>
             <input
               className="form-control"
@@ -93,15 +113,17 @@ const LoginFarmerComp = () => {
               type="number"
               placeholder="Enter carbon credit"
               onChange={(e) => setCC(e.target.value)}
+              value={cc}
+              readOnly={true}
             ></input>
           </div>
-          <div className="form-group col-4">
+          <div className="form-group col-5">
             <label>PRICE</label>
             <input className="form-control" id="price" type="number"></input>
           </div>
         </div>
         <div className="row">
-          <div className="form-group col-4">
+          <div className="form-group col-3">
             <label>NAME</label>
             <input
               className="form-control"
@@ -109,7 +131,7 @@ const LoginFarmerComp = () => {
               placeholder="Enter name"
             ></input>
           </div>
-          <div className="form-group col-4">
+          <div className="form-group col-5">
             <label> MOBILE</label>
             <input
               className="form-control"
@@ -119,15 +141,31 @@ const LoginFarmerComp = () => {
             ></input>
           </div>
           <div className="form-group col-4">
-            <label>AADHAR CARD NUMBER</label>
-            <input className="form-control" id="aadharnum"></input>
+            <label>AADHAR CARD NUMBER (Like "WXYZ" "ABCD")</label>
+            <div class="form-horizontal">
+              <div class="input-group">
+                <input className="form-control" id="aadharnum"
+                onChange={(e)=>setAadhar(e.target.value)}
+                ></input>
+                <span class="input-group-btn bg-secondary">
+                  <button
+                    class="btn btn-default text-white"
+                    type="button"
+                    onClick={getCCHandler}
+                  >
+                    GET CARBON CREDIT
+                  </button>
+                </span>
+              
+              </div>
+            </div>
           </div>
 
-          <div className="form-group col-4">
+          <div className="form-group col-3">
             <label>CITY</label>
             <input className="form-control" id="city"></input>
           </div>
-          <div className="form-group col-4">
+          <div className="form-group col-5">
             <label>STATE</label>
             <select className="form-control" id="state">
               <option disabled="true">---Select State----</option>
@@ -148,21 +186,33 @@ const LoginFarmerComp = () => {
           </div>
         </div>
         <div className="row">
-          <div className="form-group col-4">
+          <div className="form-group col-3">
             <label>GENDER</label>
             <select className="form-control" id="gender">
               <option>Male</option>
               <option>Female</option>
             </select>
           </div>
-          <div className="form-group col-4">
+          <div className="form-group col-5">
             <label>META MASK ADDRESS</label>
             <div class="form-horizontal">
               <div class="input-group">
-                  <input type="text" class="form-control" value={mma} id="mmaddress" onChange={(e)=>setMMA(e.target.value)} ></input>
-                  <span class="input-group-btn bg-secondary" >
-                      <button class="btn btn-default text-white" type="button" onClick={connectMMA}>GET MMA</button>
-                  </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  value={mma}
+                  id="mmaddress"
+                  onChange={(e) => setMMA(e.target.value)}
+                ></input>
+                <span class="input-group-btn bg-secondary">
+                  <button
+                    class="btn btn-default text-white"
+                    type="button"
+                    onClick={connectMMA}
+                  >
+                    GET MMA
+                  </button>
+                </span>
               </div>
             </div>
           </div>

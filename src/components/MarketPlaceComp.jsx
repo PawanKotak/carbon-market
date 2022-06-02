@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap";
 import { React, useEffect, useState } from "react";
 import axios from "axios";
+import LoaderCustComp from "./LoaderCustComp";
 
 const BACKEND_URL = "http://localhost:4000";
 const config = {
@@ -15,6 +16,7 @@ const config = {
 };
 
 const MaketPlaceComp = () => {
+
   const [prodDetails, setProdDetails] = useState([]);
   const [allProdDetails, setAllProdDetails] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -45,7 +47,7 @@ const MaketPlaceComp = () => {
   };
 
   const purchaseProduct = async () => {
-    console.log("Number to HEx");
+    console.log("Selected Token ID",selectTokenID);
 
     let formdata = {
       tokenID: selectTokenID,
@@ -58,12 +60,14 @@ const MaketPlaceComp = () => {
       formdata,
       config
     );
+    removeProductItem(selectTokenID);
     handleClose();
+    
   };
 
   const searchHandle = () => {
     if (searchKey) {
-      const filterItem = prodDetails.filter(
+      const filterItem = allProdDetails.filter(
         (item) =>
           item.attributes[2]?.value?.toLowerCase() ==
             searchKey?.toLowerCase() ||
@@ -76,124 +80,137 @@ const MaketPlaceComp = () => {
     else
       setProdDetails(allProdDetails);
   };
+
+  const removeProductItem = (tokenID) =>{
+    const prodDetailsFilter = prodDetails.filter((item) => item.tokenID != tokenID);
+    setProdDetails(prodDetailsFilter);
+    const allProdDetailsFilter = allProdDetails.filter((item) => item.tokenID !=tokenID);
+    setAllProdDetails(allProdDetailsFilter);
+  } 
+
   return (
-    <div className="row p-3">
-      <div className="col-md-12 form-horizontal">
-        <div class="input-group" style={{ width: "50%" }}>
-          <input
-            type={"search"}
-            className="form-control"
-            onChange={(e) => setSearchKey(`${e.target.value}`)}
-          ></input>
-          <span class="input-group-btn bg-secondary">
-            <button
-              class="btn btn-default text-white"
-              type="button"
-              onClick={searchHandle}
-            >
-              SEARCH (Place/Carbon Credit)
-            </button>
-          </span>
-        </div>
-      </div>
-      {prodDetails &&
-        prodDetails.map((item, index) => (
-          <Card
-            key={index + 1}
-            className="col-md-4 m-3"
-            style={{ width: "18rem" }}
-          >
-            <Card.Img variant="top" src={item?.image} />
-            <Card.Body>
-              <Card.Title>{item?.title}</Card.Title>
-              <Card.Text>{item?.title}</Card.Text>
-            </Card.Body>
-            <ListGroup className="list-group-flush">
-              <ListGroupItem>
-                <b>Carbon Credit</b>: {item?.attributes[5]?.value}
-              </ListGroupItem>
-              <ListGroupItem>
-                <b>Place</b>: {item?.attributes[2]?.value}
-              </ListGroupItem>
-              <ListGroupItem>
-                <b>Country</b>: {item?.attributes[3]?.value}
-              </ListGroupItem>
-            </ListGroup>
-            <Card.Body>
-              <Button
-                variant="primary"
-                onClick={() => showProductDet(item, item?.tokenID)}
-                role="button"
+    <> 
+      
+      <div className="row p-3">
+        <div className="col-md-12 form-horizontal">
+          <div className="input-group" style={{ width: "50%" }}>
+            <input
+              type={"search"}
+              className="form-control"
+              onChange={(e) => setSearchKey(`${e.target.value}`)}
+            ></input>
+            <span class="input-group-btn bg-secondary">
+              <button
+                class="btn btn-default text-white"
+                type="button"
+                onClick={searchHandle}
               >
-                BUY
+                SEARCH (Place/Carbon Credit)
+              </button>
+            </span>
+          </div>
+        </div>
+        {prodDetails &&
+          prodDetails.map((item, index) => (
+            <Card
+              key={index + 1}
+              className="col-md-4 m-3"
+              style={{ width: "18rem" }}
+            >
+              <Card.Img variant="top" src={item?.image} />
+              <Card.Body>
+                <Card.Title>{item?.title}</Card.Title>
+                <Card.Text>{item?.title}</Card.Text>
+              </Card.Body>
+              <ListGroup className="list-group-flush">
+                <ListGroupItem>
+                  <b>Carbon Credit</b>: {item?.attributes[5]?.value}
+                </ListGroupItem>
+                <ListGroupItem>
+                  <b>Place</b>: {item?.attributes[2]?.value}
+                </ListGroupItem>
+                <ListGroupItem>
+                  <b>Country</b>: {item?.attributes[3]?.value}
+                </ListGroupItem>
+              </ListGroup>
+              <Card.Body>
+                <Button
+                  variant="primary"
+                  onClick={() => showProductDet(item, item?.tokenID)}
+                  role="button"
+                >
+                  BUY
+                </Button>
+              </Card.Body>
+            </Card>
+          ))}
+
+        {prodDetails && (
+          <Modal show={show} onHide={handleClose} >
+            <Modal.Header closeButton>
+              <Modal.Title>Product Details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ListGroup className="list-group-flush">
+                <ListGroupItem>
+                  <b>Token ID</b>: {selectTokenID}
+                </ListGroupItem>
+                <ListGroupItem>
+                  <b>Carbon Credit</b>: {selectedProduct?.attributes[5].value}
+                </ListGroupItem>
+                <ListGroupItem>
+                  <b>Place</b>: {selectedProduct?.attributes[2].value}
+                </ListGroupItem>
+                <ListGroupItem>
+                  <b>Country</b>: {selectedProduct?.attributes[3].value}
+                </ListGroupItem>
+                <ListGroupItem className="form-control row">
+                  <span className="col-4">
+                    <b> Ethereum</b>
+                  </span>
+                  <input
+                  className="col-8 "
+                    type="number"
+                    min="1"
+                    max="5"
+                    value={amountEth}
+                    onChange={(e) => selectAmountEth(e.target.value)}
+                  ></input>
+                </ListGroupItem>
+                <ListGroupItem className="form-control row" >
+                  <span className="col-4" >
+                    <b> Address To</b>
+                  </span>
+                  <input
+                    className="col-8"
+                    type="text"
+                    onChange={(e) => setAddressTo(e.target.value)}
+                  ></input>
+                </ListGroupItem>
+
+                {/* <ListGroupItem>
+                  <span>
+                    <b> PRIVATE KEY TRNSATION </b>
+                  </span>
+                  <input
+                    type="text"
+                    onChange={(e) => setPrivateKey(e.target.value)}
+                  ></input>
+                </ListGroupItem> */}
+              </ListGroup>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
               </Button>
-            </Card.Body>
-          </Card>
-        ))}
-
-      {prodDetails && (
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Product Details</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <ListGroup className="list-group-flush">
-              <ListGroupItem>
-                <b>Token ID</b>: {selectTokenID}
-              </ListGroupItem>
-              <ListGroupItem>
-                <b>Carbon Credit</b>: {selectedProduct?.attributes[5].value}
-              </ListGroupItem>
-              <ListGroupItem>
-                <b>Place</b>: {selectedProduct?.attributes[2].value}
-              </ListGroupItem>
-              <ListGroupItem>
-                <b>Country</b>: {selectedProduct?.attributes[3].value}
-              </ListGroupItem>
-              <ListGroupItem>
-                <span>
-                  <b> Ethereum</b>
-                </span>
-                <input
-                  type="number"
-                  min="1"
-                  max="5"
-                  value={amountEth}
-                  onChange={(e) => selectAmountEth(e.target.value)}
-                ></input>
-              </ListGroupItem>
-              <ListGroupItem>
-                <span>
-                  <b> Address To</b>
-                </span>
-                <input
-                  type="text"
-                  onChange={(e) => setAddressTo(e.target.value)}
-                ></input>
-              </ListGroupItem>
-
-              <ListGroupItem>
-                <span>
-                  <b> PRIVATE KEY TRNSATION </b>
-                </span>
-                <input
-                  type="text"
-                  onChange={(e) => setPrivateKey(e.target.value)}
-                ></input>
-              </ListGroupItem>
-            </ListGroup>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={purchaseProduct}>
-              Confirm Purchase
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
-    </div>
+              <Button variant="primary" onClick={purchaseProduct}>
+                Confirm Purchase
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )}
+      </div>
+    </>
   );
 };
 
