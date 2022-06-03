@@ -19,6 +19,7 @@ const LoginFarmerComp = () => {
   const { authenticate, isAuthenticated, user } = useMoralis();
   const [ipfsData, setIPFSData] = useState();
   const [cc, setCC] = useState(0);
+  const [price, setPrice] = useState(0);
   const [mma, setMMA] = useState();
   const [loader, setLoader] = useState(false);
   const [aadhar,setAadhar] =useState();
@@ -97,6 +98,7 @@ const LoginFarmerComp = () => {
     if(Array.isArray(result.data) && result.data.length>0){
       console.log("asdf",result.data[0].cc);
       setCC( result.data[0].cc);
+      setPrice(parseInt(result.data[0].cc /10));
     }
   }
 
@@ -118,8 +120,8 @@ const LoginFarmerComp = () => {
             ></input>
           </div>
           <div className="form-group col-5">
-            <label>PRICE</label>
-            <input className="form-control" id="price" type="number"></input>
+            <label>PRICE (in Ether)</label>
+            <input className="form-control" id="price" type="number" value={price} readOnly></input>
           </div>
         </div>
         <div className="row">

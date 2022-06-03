@@ -51,7 +51,7 @@ const MaketPlaceComp = () => {
 
     let formdata = {
       tokenID: selectTokenID,
-      amount: amountEth,
+      amount: selectedProduct?.attributes[4].value,
       addressto: addressTo,
       privatekey: privateKey,
     };
@@ -166,15 +166,16 @@ const MaketPlaceComp = () => {
                 </ListGroupItem>
                 <ListGroupItem className="form-control row">
                   <span className="col-4">
-                    <b> Ethereum</b>
+                    <b> Price in Ether(x 0.001)</b>
                   </span>
                   <input
                   className="col-8 "
                     type="number"
                     min="1"
                     max="5"
-                    value={amountEth}
+                    value={selectedProduct?.attributes[4].value}
                     onChange={(e) => selectAmountEth(e.target.value)}
+                    readOnly
                   ></input>
                 </ListGroupItem>
                 <ListGroupItem className="form-control row" >

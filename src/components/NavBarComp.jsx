@@ -26,8 +26,8 @@ const NavBarComp = () => {
       </ul>
 
       <div class="col-md-3 text-end">
-        <Link to="/login" type="button" className="btn btn-outline-primary me-2">Login</Link>
-        <Link to="/signup" type="button" className="btn btn-primary">Sign-up</Link>
+        <Link to="/login" type="button" className="btn btn-outline-primary me-2">Register</Link>
+        {/* <Link to="/signup" type="button" className="btn btn-primary">Sign-up</Link> */}
       </div>      
     </header>);
 };
