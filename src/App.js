@@ -15,7 +15,7 @@ import LoginFarmerComp from "./components/LoginFarmerComp";
 function App() {
   return (
     <BrowserRouter>
-      <div className="container-fluid">
+      <div className="container-fluid bg-light">
         <NavBarComp />
         <Routes>
           <Route path="/" element={<WelcomeComp></WelcomeComp>}></Route> 
