@@ -20,13 +20,13 @@ const NavBarComp = () => {
 
       <ul class="nav text-end">
         {[
-          { title: "Explore", url: "/explore-collections" },
-          { title: "Create", url: "/create" },
-          { title: "NFT Details", url: "/tokenowner" },
+          { title: "Explore", url: "/explore-collections", description:"Search and Buy carbon credit" },
+          { title: "Create", url: "/create", description:"Create NFT for farmer carbon credit"  },
+          { title: "NFT Details", url: "/tokenowner" , description:"Check NFT owner" },
         ].map((item, index) => {
           return (
             <li key={index}>
-              <Link to={item.url} class="nav-link px-4 link-dark h4">
+              <Link to={item.url} class="nav-link px-4 link-dark h4" title={item?.description}>
                 {item.title}
               </Link>
             </li>
