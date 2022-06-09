@@ -15,11 +15,13 @@ import LoginFarmerComp from "./components/LoginFarmerComp";
 function App() {
   return (
     <BrowserRouter>
-      <div className="container">
+      <div className="container-fluid">
         <NavBarComp />
         <Routes>
           <Route path="/" element={<WelcomeComp></WelcomeComp>}></Route> 
-          <Route path="/tokenowner" element={<TokenOwnerComp></TokenOwnerComp>}></Route>         
+          <Route path="/tokenowner" element={<TokenOwnerComp></TokenOwnerComp>}></Route>  
+          <Route path="/explore-collections" element={<MarketPlaceComp></MarketPlaceComp>}></Route> 
+          <Route path="/create" element={<LoginFarmerComp></LoginFarmerComp>}></Route>       
           <Route path="/login" element={<LoginComp></LoginComp>}>
             <Route path="/login/farmer" element={<LoginFarmerComp></LoginFarmerComp>}></Route>
             <Route path="/login/marketplace" element={<MarketPlaceComp></MarketPlaceComp>}></Route>
