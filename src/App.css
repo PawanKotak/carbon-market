@@ -29,6 +29,15 @@ div.overlay > div {
   max-width: 700px !important;
 }
 
+#landing-image:hover{
+  
+  transition: box-shadow 0.3s ease-in 0s;
+  box-shadow: rgb(4 17 29 / 25%) 0px 0px 50px 0px;
+}
+
+.card-img-top{ 
+border-radius: 15px 15px 0px 0px;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

@@ -30,16 +30,12 @@ const WelcomeComp = () => {
           </div>
         </Col>
         <Col>
-          <Card className="col-md-11 m-3 mt-5">
+          <Card className="col-md-11 m-3 mt-5" id="landing-image">
             <Card.Img variant="top" src="/farmer1.png" />
             <Card.Body>
               <Card.Title></Card.Title>
-              <Card.Text></Card.Text>
-            </Card.Body>
-
-            <Card.Body>
-            Outdoor image of  Indian farmer
-            </Card.Body>
+              <Card.Text className="fs-5 font-italic">Outdoor image of  Indian farmer</Card.Text>
+            </Card.Body>            
           </Card>
         </Col>
       </Row>
