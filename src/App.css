@@ -39,6 +39,10 @@ div.overlay > div {
 border-radius: 15px 15px 0px 0px;
 }
 
+.vh-25 {
+  height: 35vh;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

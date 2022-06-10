@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Col, Form } from "react-bootstrap";
+import {PersonCircle, WalletFill} from "react-bootstrap-icons";
 
 const NavBarComp = () => {
   return (
@@ -32,8 +33,11 @@ const NavBarComp = () => {
             </li>
           );
         })}
-        <Link to="/login" type="button" className="nav-link px-4 link-dark h4">
-          Register
+        <Link to="/login-new" type="button" className="nav-link px-4 link-dark h4" title="Login">          
+          <PersonCircle size={30}></PersonCircle>
+        </Link>
+        <Link to="#" type="button" className="nav-link px-4 link-dark h4" title="Wallet">          
+          <WalletFill size={30}></WalletFill>
         </Link>
       </ul>
     </header>
