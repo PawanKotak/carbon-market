@@ -1,4 +1,4 @@
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Tabs, Tab } from "react-bootstrap";
 import {
   PersonFill,
   PersonCircle,
@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 const AccountComp = () => {
   const [userAccount, setUserAccount] = useState("XXXXXXXXXXX");
   const [useName, setUserName] = useState("Unnamed");
+  const [key, setKey] = useState("collected");
 
   useEffect(() => {
     (async () => {
@@ -39,6 +40,26 @@ const AccountComp = () => {
             <SuitDiamondFill></SuitDiamondFill>
           </span>
           {userAccount}
+        </Col>
+      </Row>
+      <Row className="mt-5">
+        <Col>
+          <Tabs
+            id="controlled-tab-example"
+            activeKey={key}
+            onSelect={(k) => setKey(k)}
+            className="mb-3  fs-5"
+          >
+            <Tab eventKey="collected" title="Collected">
+              <div >Collected</div>
+            </Tab>
+            <Tab eventKey="created" title="Created">
+            <div>Created</div>
+            </Tab>
+            <Tab eventKey="favourited" title="Favourited" disabled>
+            <div>Favourited</div>
+            </Tab>
+          </Tabs>
         </Col>
       </Row>
     </>
