@@ -180,7 +180,7 @@ const LoginFarmerComp = () => {
       )}
       <form onSubmit={submitHandler}>
         <div className="row">
-          <div className="form-group col-3">
+          <div className="form-group col-4">
             <label forHTML="carbonpoints"> CARBON CREDIT</label>
             <input
               className="form-control"
@@ -192,7 +192,7 @@ const LoginFarmerComp = () => {
               readOnly={true}
             ></input>
           </div>
-          <div className="form-group col-5">
+          <div className="form-group col-4">
             <label>PRICE (in Ether)</label>
             <input
               className="form-control"
@@ -204,7 +204,7 @@ const LoginFarmerComp = () => {
           </div>
         </div>
         <div className="row">
-          <div className="form-group col-3">
+          <div className="form-group col-4">
             <label>NAME</label>
             <input
               className="form-control"
@@ -213,7 +213,7 @@ const LoginFarmerComp = () => {
               value={formData.firstName + ' ' + formData.lastName}
             ></input>
           </div>
-          <div className="form-group col-5">
+          <div className="form-group col-4">
             <label> Email</label>
             <input
               className="form-control"
@@ -224,7 +224,7 @@ const LoginFarmerComp = () => {
             ></input>
           </div>
           <div className="form-group col-4">
-            <label>FARM DEVICE UNIQUE ID (Like "WXYZ" "ABCD")</label>
+            <label>Land Record ID (Like "WXYZ" "ABCD")</label>
             <div class="form-horizontal">
               <div class="input-group">
                 <input
@@ -245,13 +245,13 @@ const LoginFarmerComp = () => {
             </div>
           </div>
 
-          <div className="form-group col-3">
+          <div className="form-group col-4">
             <label>CITY</label>
             <input className="form-control" id="city"
             value={formData.city }
             ></input>
           </div>
-          <div className="form-group col-5">
+          <div className="form-group col-4">
             <label>STATE</label>
             <select className="form-control" id="state" value={formData.state }>
               <option disabled="true">---Select State----</option>
@@ -272,14 +272,14 @@ const LoginFarmerComp = () => {
           </div>
         </div>
         <div className="row">
-          <div className="form-group col-3">
+          <div className="form-group col-4">
             <label>GENDER</label>
             <select className="form-control" id="gender">
               <option>Male</option>
               <option>Female</option>
             </select>
           </div>
-          <div className="form-group col-5">
+          <div className="form-group col-4">
             <label>META MASK ADDRESS</label>
             <div class="form-horizontal">
               <div class="input-group">

@@ -22,8 +22,9 @@ const NavBarComp = () => {
       <ul class="nav text-end">
         {[
           { title: "Marketplace", url: "/explore-collections", description:"Search and Buy carbon credit" },
-          { title: "Create", url: "/create", description:"Create NFT for farmer carbon credit"  },
-          { title: "NFT Details", url: "/tokenowner" , description:"Check NFT owner" },
+          { title: "Create", url: "/create", description:"Create NFT for farmer carbon credit"  },         
+          { title: "Check Owner", url: "/tokenowner" , description:"Check NFT owner" },
+          { title: "Registration", url: "/kyc" , description:"Farmer KYC" },
         ].map((item, index) => {
           return (
             <li key={index}>

@@ -100,7 +100,7 @@ const KYCComp = () => {
         <Loading loading background="#ced4daaa" loaderColor="#198754" />
       )}
       <Form className="w-50 mx-auto" onSubmit={submitHandler}>
-        <header className="fs-2 fw-bold">KYC Registration Form</header>
+        <header className="fs-2 fw-bold">Farmer's Registration Form (KYC) </header>
         <Form.Group className="mb-3" controlId="formFirstName">
           <Form.Label>First name *</Form.Label>
           <Form.Control type="text" />
@@ -115,7 +115,7 @@ const KYCComp = () => {
           <Form.Control type="text" />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formNationalID">
-          <Form.Label>National ID *</Form.Label>
+          <Form.Label>Goverment ID *</Form.Label>
           <Form.Control type="text" />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formCity">
@@ -143,7 +143,11 @@ const KYCComp = () => {
         </Form.Group>
 
         <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label>National ID image*</Form.Label>
+          <Form.Label>Goverment ID image*</Form.Label>
+          <Form.Control type="file" />
+        </Form.Group>
+        <Form.Group controlId="formFile" className="mb-3">
+          <Form.Label>Land Record image*</Form.Label>
           <Form.Control type="file" />
         </Form.Group>
         <Form.Group controlId="wallet" className="mb-3 ">
