@@ -21,7 +21,7 @@ const NavBarComp = () => {
 
       <ul class="nav text-end">
         {[
-          { title: "Explore", url: "/explore-collections", description:"Search and Buy carbon credit" },
+          { title: "Marketplace", url: "/explore-collections", description:"Search and Buy carbon credit" },
           { title: "Create", url: "/create", description:"Create NFT for farmer carbon credit"  },
           { title: "NFT Details", url: "/tokenowner" , description:"Check NFT owner" },
         ].map((item, index) => {

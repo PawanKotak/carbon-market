@@ -19,7 +19,7 @@ const WelcomeComp = () => {
                 class="btn btn-success me-4 w-25 fs-4 fw-bolder"
                 to="/explore-collections"
               >
-                Explore
+                Marketplace
               </Link>
               <Link
                 class="btn btn-outline-secondary w-25 fs-4 fw-bolder"
