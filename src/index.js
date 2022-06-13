@@ -7,11 +7,11 @@ import { MoralisProvider } from "react-moralis";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <>
     <MoralisProvider serverUrl='https://sxkjzozehyal.usemoralis.com:2053/server' appId='1KZnq8wr6OPaqHlNSDr6KXocgpgXHrKwguZXR6n8' > 
       <App />
     </MoralisProvider>
-  </React.StrictMode>
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function

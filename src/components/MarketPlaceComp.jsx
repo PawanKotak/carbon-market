@@ -9,6 +9,7 @@ import {
 import { React, useEffect, useState } from "react";
 import axios from "axios";
 import LoaderCustComp from "./LoaderCustComp";
+import Loading from "react-fullscreen-loading";
 
 const BACKEND_URL = "http://localhost:4000";
 const config = {
@@ -16,7 +17,6 @@ const config = {
 };
 
 const MaketPlaceComp = () => {
-
   const [prodDetails, setProdDetails] = useState([]);
   const [allProdDetails, setAllProdDetails] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -26,15 +26,23 @@ const MaketPlaceComp = () => {
   const [addressTo, setAddressTo] = useState(null);
   const [privateKey, setPrivateKey] = useState(null);
   const [searchKey, setSearchKey] = useState(null);
+  const [loading, setLoading] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   useEffect(() => {
     (async () => {
-      const result = await axios.get("http://localhost:4000/marketnft");
-      console.log(result);
-      setProdDetails(result?.data?.data);
-      setAllProdDetails(result?.data?.data);
+      try {
+        setLoading(true);
+        const result = await axios.get("http://localhost:4000/marketnft");
+        console.log(result);
+        setProdDetails(result?.data?.data);
+        setAllProdDetails(result?.data?.data);
+        setLoading(false);
+      } catch (err) {
+        console.log(err);
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -47,7 +55,7 @@ const MaketPlaceComp = () => {
   };
 
   const purchaseProduct = async () => {
-    console.log("Selected Token ID",selectTokenID);
+    console.log("Selected Token ID", selectTokenID);
 
     let formdata = {
       tokenID: selectTokenID,
@@ -62,7 +70,6 @@ const MaketPlaceComp = () => {
     );
     removeProductItem(selectTokenID);
     handleClose();
-    
   };
 
   const searchHandle = () => {
@@ -76,21 +83,25 @@ const MaketPlaceComp = () => {
 
       console.log("filter Item", filterItem);
       setProdDetails(filterItem);
-    }
-    else
-      setProdDetails(allProdDetails);
+    } else setProdDetails(allProdDetails);
   };
 
-  const removeProductItem = (tokenID) =>{
-    const prodDetailsFilter = prodDetails.filter((item) => item.tokenID != tokenID);
+  const removeProductItem = (tokenID) => {
+    const prodDetailsFilter = prodDetails.filter(
+      (item) => item.tokenID != tokenID
+    );
     setProdDetails(prodDetailsFilter);
-    const allProdDetailsFilter = allProdDetails.filter((item) => item.tokenID !=tokenID);
+    const allProdDetailsFilter = allProdDetails.filter(
+      (item) => item.tokenID != tokenID
+    );
     setAllProdDetails(allProdDetailsFilter);
-  } 
+  };
 
   return (
-    <> 
-      
+    <>
+      {loading && (
+        <Loading loading background="#ced4daaa" loaderColor="#198754" />
+      )}
       <div className="row p-3">
         <div className="col-md-12 form-horizontal">
           <div className="input-group" style={{ width: "50%" }}>
@@ -135,7 +146,7 @@ const MaketPlaceComp = () => {
               </ListGroup>
               <Card.Body>
                 <Button
-                  variant="primary"
+                  variant="success"
                   onClick={() => showProductDet(item, item?.tokenID)}
                   role="button"
                 >
@@ -146,7 +157,7 @@ const MaketPlaceComp = () => {
           ))}
 
         {prodDetails && (
-          <Modal show={show} onHide={handleClose} >
+          <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Product Details</Modal.Title>
             </Modal.Header>
@@ -169,7 +180,7 @@ const MaketPlaceComp = () => {
                     <b> Price in Ether(x 0.001)</b>
                   </span>
                   <input
-                  className="col-8 "
+                    className="col-8 "
                     type="number"
                     min="1"
                     max="5"
@@ -178,8 +189,8 @@ const MaketPlaceComp = () => {
                     readOnly
                   ></input>
                 </ListGroupItem>
-                <ListGroupItem className="form-control row" >
-                  <span className="col-4" >
+                <ListGroupItem className="form-control row">
+                  <span className="col-4">
                     <b> Address To</b>
                   </span>
                   <input

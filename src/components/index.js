@@ -7,6 +7,7 @@ import MarketPlaceComp from "./MarketPlaceComp";
 import TokenOwnerComp from "./TokenOwnerComp";
 import LoaderCustComp from "./LoaderCustComp";
 import LoginNewComp from "./LoginNewComp";
-import AccountComp from "./AccountComp"
+import AccountComp from "./AccountComp";
+import KYCComp from "./KYCComp";
 
-export {FooterComp,NavBarComp,WelcomeComp,PageNotFound,LoginComp,MarketPlaceComp,TokenOwnerComp, LoaderCustComp,LoginNewComp,AccountComp};
+export {FooterComp,NavBarComp,WelcomeComp,PageNotFound,LoginComp,MarketPlaceComp,TokenOwnerComp, LoaderCustComp,LoginNewComp,AccountComp, KYCComp};

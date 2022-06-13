@@ -1,13 +1,17 @@
-import { Row, Col, ListGroup } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Row, Col, ListGroup ,Alert  } from "react-bootstrap";
+import { useNavigate  } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const LoginNewComp = () => {
   const navigate = useNavigate();
-  const handleWallet = async () => {
-    console.log(`Handle Wallet`);
+  const [show, setShow] = useState(false);
+ 
+  const checkWalletConnect = async () => {
 
     if (!("ethereum" in window)) {
+      console.log('test');
       window.open("https://metamask.io/download");
+      setShow(true);
     } else {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
@@ -16,9 +20,30 @@ const LoginNewComp = () => {
       navigate("/account");
       console.log("Account", accounts[0]);
     }
+  }
+  useEffect(()=>{
+    checkWalletConnect()
+  },[]);
+
+  const handleWallet = () => {
+    console.log(`Handle Wallet`);
+    checkWalletConnect();
   };
+
   return (
     <>
+      { show &&  <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+        <Alert.Heading>You got an error!</Alert.Heading>
+        <p>
+        Wallet extension needs to be installed {" "}
+        <a
+            target="_blank"
+            href="https://metamask.io/download/"
+          >
+            Meta Mask Link
+          </a>
+        </p>
+      </Alert>}
       <Row className="mt-5">
         <Col className="col-6 mx-auto">
           <div className="display-6 fw-bold"> Connect your wallet.</div>
