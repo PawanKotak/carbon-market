@@ -14,7 +14,6 @@ const config = {
 };
 
 const LoginFarmerComp = () => {
-
   const [nftImage, setNFTImage] = useState(
     "http://localhost:4000/defaultImage.png"
   );
@@ -32,51 +31,45 @@ const LoginFarmerComp = () => {
   const [show, setShow] = useState(false);
   const [alertVariant, setAlertVariant] = useState();
 
-  useEffect(()=>{
-    console.log('useEffect');
+  useEffect(() => {
+    console.log("useEffect");
     if (!("ethereum" in window)) {
-      navigate('/login-new');
-    }
-    else{
-      (async ()=>{     
+      navigate("/login-new");
+    } else {
+      (async () => {
         await connectMMA();
-        if(process.env.REACT_APP_KYC == 'true'){        
+        if (process.env.REACT_APP_KYC == "true") {
           //Input Data
           const inputData = {
             mma,
-          }; 
+          };
           console.log(inputData);
-          
-          //API Call only if mma is not undefined 
-          if(mma !== undefined){  
-            axios.post(BACKEND_URL + "/checkKYC", inputData, config)
-            .then((resp) => {
-              console.log(`res`,resp);
-              if(!resp.data)
-                navigate('/kyc');
-              else{
-                axios.post(BACKEND_URL + "/getKYCDetails", inputData, config)
-                .then((res)=>{
 
-                  console.log(`KYC details`,res);
-                  setFormData(res.data);
-                })
-              }
-
-            })
-            .catch(err=>{
-              console.log(err);
-            })
-         }
-
-        }
-        else{
-
+          //API Call only if mma is not undefined
+          if (mma !== undefined) {
+            axios
+              .post(BACKEND_URL + "/checkKYC", inputData, config)
+              .then((resp) => {
+                console.log(`res`, resp);
+                if (!resp.data) navigate("/kyc");
+                else {
+                  axios
+                    .post(BACKEND_URL + "/getKYCDetails", inputData, config)
+                    .then((res) => {
+                      console.log(`KYC details`, res);
+                      setFormData(res.data);
+                    });
+                }
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        } else {
         }
       })();
     }
-
-  },[mma])
+  }, [mma]);
 
   const handleImageGenerate = () => {
     console.log("TEST");
@@ -125,20 +118,26 @@ const LoginFarmerComp = () => {
     };
 
     console.table(formdata);
-    axios.post(BACKEND_URL, formdata, config).then((data) => {
-      setIPFSData(data);
-      setLoader(false);
-     
-      setAlertVariant("success");
+    axios
+      .post(BACKEND_URL, formdata, config)
+      .then((data) => {
+        setIPFSData(data);
+        setLoader(false);
+        setAlertVariant("success");
         setLoading(false);
         setShow(true);
-    })
-    .catch(err=>{
-      console.log(err);
-      setAlertVariant("danger");
-      setLoading(false);
-      setShow(true);
-    });
+        window.scrollTo(0, 0); //Move to Top
+        setTimeout(() => {
+          navigate("/explore-collections");
+        }, 5000);
+      })
+      .catch((err) => {
+        console.log(err);
+        setAlertVariant("danger");
+        setLoading(false);
+        setShow(true);
+        window.scrollTo(0, 0); //Move to Top
+      });
   };
 
   const connectMMA = async () => {
@@ -170,9 +169,7 @@ const LoginFarmerComp = () => {
           dismissible
         >
           <Alert.Heading>{alertVariant?.toUpperCase()}!</Alert.Heading>
-          <p>
-            {alertVariant === "success" ? ''  : '' }
-          </p>
+          <p>{alertVariant === "success" ? "" : ""}</p>
         </Alert>
       )}
       {loading && (
@@ -210,7 +207,7 @@ const LoginFarmerComp = () => {
               className="form-control"
               id="name"
               placeholder="Enter name"
-              value={formData.firstName + ' ' + formData.lastName}
+              value={formData.firstName + " " + formData.lastName}
             ></input>
           </div>
           <div className="form-group col-4">
@@ -247,13 +244,15 @@ const LoginFarmerComp = () => {
 
           <div className="form-group col-4">
             <label>CITY</label>
-            <input className="form-control" id="city"
-            value={formData.city }
+            <input
+              className="form-control"
+              id="city"
+              value={formData.city}
             ></input>
           </div>
           <div className="form-group col-4">
             <label>STATE</label>
-            <select className="form-control" id="state" value={formData.state }>
+            <select className="form-control" id="state" value={formData.state}>
               <option disabled="true">---Select State----</option>
               <option>ANDHRA PRADESH</option>
               <option>ASSAM</option>
@@ -268,7 +267,11 @@ const LoginFarmerComp = () => {
           </div>
           <div className="form-group col-4">
             <label>COUNTRY</label>
-            <input className="form-control" id="country" value={formData.country } ></input>
+            <input
+              className="form-control"
+              id="country"
+              value={formData.country}
+            ></input>
           </div>
         </div>
         <div className="row">
@@ -329,7 +332,7 @@ const LoginFarmerComp = () => {
         <div className="form-group mt-2">
           <input className="form-control btn btn-success" type="submit"></input>
         </div>
-        <div className="form-group mt-2">{JSON.stringify(ipfsData)}</div>
+        <div className="form-group mt-2"></div>
       </form>
     </>
   );

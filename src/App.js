@@ -11,6 +11,7 @@ import {
   LoginNewComp,  
   AccountComp,
   KYCComp,
+  KYCAppComp,
 } from "./components";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/create" element={<LoginFarmerComp></LoginFarmerComp>}></Route>     
           <Route path="/login-new" element={<LoginNewComp></LoginNewComp>}></Route> 
           <Route path="/kyc" element={<KYCComp></KYCComp>}></Route> 
+          <Route path="/kycapp" element={<KYCAppComp></KYCAppComp>}></Route>
           <Route path="/account" element={<AccountComp></AccountComp>}></Route>
           <Route path="/login" element={<LoginComp></LoginComp>}>
             <Route path="/login/farmer" element={<LoginFarmerComp></LoginFarmerComp>}></Route>

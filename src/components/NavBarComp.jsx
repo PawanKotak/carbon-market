@@ -25,6 +25,7 @@ const NavBarComp = () => {
           { title: "Create", url: "/create", description:"Create NFT for farmer carbon credit"  },         
           { title: "Check Owner", url: "/tokenowner" , description:"Check NFT owner" },
           { title: "Registration", url: "/kyc" , description:"Farmer KYC" },
+          { title: "KYC Approval", url: "/kycapp" , description:"Farmer KYC Approval" },
         ].map((item, index) => {
           return (
             <li key={index}>
