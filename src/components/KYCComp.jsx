@@ -3,19 +3,52 @@ import { useState } from "react";
 import Loading from "react-fullscreen-loading";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const config = {
   headers: { "content-type": "application/json" },
 };
 
 const KYCComp = () => {
-  const [mma, setMMA] = useState();
+  const [mma, setMMA] = useState(null);
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [alertVariant, setAlertVariant] = useState();
   const [response, setResponse] = useState();
-
   const navgiate = useNavigate();
+
+  useEffect(()=>{
+
+    ( async ()=>{
+      setLoading(true); 
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    console.log(accounts);
+    setMMA(accounts[0]);
+
+    if(mma){
+      const inputData = {
+        mma,
+      }; 
+      axios.post(process.env.REACT_APP_BACKEND_URL + "/checkKYC", inputData, config)
+      .then((resp) => {
+        if(resp?.data == true){
+          setAlertVariant("danger");          
+          setShow(true);
+          setResponse("Already registered with same wallet address.")
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err)
+        setLoading(false);
+      })
+    }
+    
+  })();
+
+  },[mma])
 
   const connectMMA = async () => {
     const accounts = await window.ethereum.request({
@@ -69,9 +102,10 @@ const KYCComp = () => {
         setAlertVariant("success");
         setLoading(false);
         setShow(true);
+        window.scrollTo(0, 0); //Move to Top
         setTimeout(() => {
           navgiate("/create");
-        }, 5000);
+        }, 10000);
       })
       .catch((err) => {
         console.log(err);
@@ -79,6 +113,7 @@ const KYCComp = () => {
         setLoading(false);
         setShow(true);
         setResponse(err);
+        window.scrollTo(0, 0); //Move to Top
       });
   };
 
