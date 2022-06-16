@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 import { useEffect } from "react";
 
 const config = {
-  headers: { "content-type": "application/json" },
+  headers: { "content-type": "multipart/form-data" },
 };
 
 const KYCComp = () => {
@@ -62,6 +62,7 @@ const KYCComp = () => {
     setLoading(true);
     console.log(`Submit Handler`, event.target.elements);
     event.preventDefault();
+    
     const {
       formFirstName,
       formLastName,
@@ -70,12 +71,28 @@ const KYCComp = () => {
       formCity,
       formState,
       formCountry,
-      formFile,
+      formGovFile,
       wallet,
+      formLandFile,
+      formLandRecordID,
     } = event.target.elements;
     console.log(
       `${formFirstName.value} ${formLastName.value} ${formEmailID.value} ${formNationalID.value} ${wallet.value}`
     );
+
+    const data = new FormData();
+    data.append('firstName',formFirstName.value);
+    data.append('lastName',formLastName.value);
+    data.append('emailID',formEmailID.value);
+    data.append('nationalID',formNationalID.value);
+    data.append('mma',wallet.value);
+    data.append('city',formCity.value);
+    data.append('state',formState.value);
+    data.append('country',formCountry.value);
+    data.append('file',formGovFile.files[0]);
+    data.append('file',formLandFile.files[0]);
+    data.append('landrecordID',formLandRecordID.value);
+
     const formdata = {
       firstName: formFirstName.value,
       lastName: formLastName.value,
@@ -92,7 +109,7 @@ const KYCComp = () => {
     axios
       .post(
         `${process.env.REACT_APP_BACKEND_URL}/addkycdetails`,
-        formdata,
+        data,
         config
       )
       .then((res) => {
@@ -104,7 +121,7 @@ const KYCComp = () => {
         setShow(true);
         window.scrollTo(0, 0); //Move to Top
         setTimeout(() => {
-          navgiate("/create");
+         navgiate("/create");
         }, 10000);
       })
       .catch((err) => {
@@ -177,13 +194,17 @@ const KYCComp = () => {
           <Form.Control type="text" />
         </Form.Group>
 
-        <Form.Group controlId="formFile" className="mb-3">
+        <Form.Group controlId="formGovFile" className="mb-3">
           <Form.Label>Goverment ID image*</Form.Label>
           <Form.Control type="file" />
         </Form.Group>
-        <Form.Group controlId="formFile" className="mb-3">
+        <Form.Group controlId="formLandFile" className="mb-3">
           <Form.Label>Land Record image*</Form.Label>
           <Form.Control type="file" />
+        </Form.Group>
+        <Form.Group controlId="formLandRecordID" className="mb-3">
+          <Form.Label>Land Record ID/ IOT Device ID*</Form.Label>
+          <Form.Control type="text" />
         </Form.Group>
         <Form.Group controlId="wallet" className="mb-3 ">
           <Form.Label>Wallet Address*</Form.Label>
