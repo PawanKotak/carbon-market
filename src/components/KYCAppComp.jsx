@@ -10,24 +10,58 @@ import {
   Col,
   Row,
 } from "react-bootstrap";
+const BACKEND_URL = "http://localhost:4000";
+const config = {
+  headers: { "content-type": "application/json" },
+};
 
 const KYCAppComp = () => {
   const [kycItem, setKYCItem] = useState([]);
   const [show, setShow] = useState(false);
   const [selectItem, setSelectItem] = useState();
+  const [cc, setCC] = useState(0);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const [nftImage, setNFTImage] = useState(
-    "http://localhost:4000/defaultImage.png"
+    process.env.REACT_APP_DEFAULT_IMG_URL
   );
 
   const showApprovalDet = (itemDetails) => {
+    setNFTImage(process.env.REACT_APP_DEFAULT_IMG_URL); //Reset Image
     handleShow();
     setSelectItem(itemDetails);
-
     console.log(itemDetails);
   };
+
+  const handleImageGenerate = async () => {
+    const result = await axios.get(
+      `http://localhost:5000/users?aadhar_like=${selectItem.landrecordID}`
+    );
+    console.log(result);
+    setCC(result?.data[0]?.cc);
+    const inputData = {
+      text: `CC : ${result?.data[0]?.cc} T:${new Date().getTime()}`,
+      place: selectItem.city,
+      country:selectItem.country
+    };
+    axios.post(BACKEND_URL + "/getImage", inputData, config).then((resp) => {
+      const imageURL = resp.data.imageURL;
+      setNFTImage(imageURL + "?" + Math.random());
+    });
+  };
+
+  const handleApprove = () => {
+    console.log('HandleApprove',selectItem);    
+    const inputData = selectItem;
+    inputData.cc = cc;
+    axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/approvedetails`,
+      inputData,
+      config
+    );
+    handleClose();
+
+  }
 
   useEffect(() => {
     (async () => {
@@ -117,36 +151,20 @@ const KYCAppComp = () => {
                 <ListGroupItem>
                   <b>Country</b>: {selectItem?.country}
                 </ListGroupItem>
-                <ListGroupItem></ListGroupItem>
-              </ListGroup>
-            </Col>
-            <Col className="text-center">
-              <Button variant="success" className="d-block mx-auto mt-3">Generate Certificate</Button>
-              <img
-                src={nftImage}
-                alt=""
-                className="col img-thumbnail h-50 mt-3"
-                style={{ height: "100%" }}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <div className="fs-6 fw-bold">Document Attached :</div>
-          </Row>
-          <Row>
-            <Col>
-              <figure class="figure">
-                <img
-                  src={selectItem?.govimgurl}
-                  className="img-thumbnail"
-                ></img>
-                <figcaption class="figure-caption text-center">
-                  Goverment ID Image
-                </figcaption>
-              </figure>
-            </Col>
-            <Col>
-              <figure class="figure">
+                <ListGroupItem>
+                  <div className="fs-6 fw-bold">Document's</div>
+                  <figure class="figure">
+                    <img
+                      src={selectItem?.govimgurl}
+                      className="img-thumbnail"
+                    ></img>
+                    <figcaption class="figure-caption text-center">
+                      Goverment ID Image
+                    </figcaption>
+                  </figure>
+                </ListGroupItem>
+                <ListGroupItem>
+                <figure class="figure">
                 <img
                   src={selectItem?.landimgurl}
                   className="img-thumbnail"
@@ -155,15 +173,32 @@ const KYCAppComp = () => {
                   Land Record Image
                 </figcaption>
               </figure>
+                </ListGroupItem>
+              </ListGroup>
+            </Col>
+            <Col className="text-center">
+              <Button
+                variant="success"
+                className="d-block mx-auto mt-3"
+                onClick={handleImageGenerate}
+              >
+                Generate Certificate
+              </Button>
+              <img
+                src={nftImage}
+                alt=""
+                className="col img-thumbnail h-25 mt-3 shadow-lg"
+              />
             </Col>
           </Row>
+          
         </Modal.Body>
 
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">Confirm Approve</Button>
+          <Button variant="primary" onClick={handleApprove}>Confirm Approve</Button>
         </Modal.Footer>
       </Modal>
     </>

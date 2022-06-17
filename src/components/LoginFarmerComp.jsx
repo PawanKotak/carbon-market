@@ -51,13 +51,18 @@ const LoginFarmerComp = () => {
               .post(BACKEND_URL + "/checkKYC", inputData, config)
               .then((resp) => {
                 console.log(`res`, resp);
-                if (!resp.data) navigate("/kyc");
-                else {
+                if (!resp.data.kycrequested) navigate("/kyc");
+                else if (resp.data.kycrequested && !resp.data.kycapprove) {
+                  navigate("/kycnotapproved");
+                } else {
                   axios
                     .post(BACKEND_URL + "/getKYCDetails", inputData, config)
                     .then((res) => {
                       console.log(`KYC details`, res);
                       setFormData(res.data);
+                      setCC(res.data.cc);
+                      setPrice(parseInt(res.data.cc / 10));
+                      setNFTImage(res.data.certiimgurl);
                     });
                 }
               })
@@ -176,159 +181,180 @@ const LoginFarmerComp = () => {
         <Loading loading background="#ced4daaa" loaderColor="#198754" />
       )}
       <form onSubmit={submitHandler}>
-        <div className="row">
-          <div className="form-group col-4">
-            <label forHTML="carbonpoints"> CARBON CREDIT</label>
-            <input
-              className="form-control"
-              id="carbonpoints"
-              type="number"
-              placeholder="Enter carbon credit"
-              onChange={(e) => setCC(e.target.value)}
-              value={cc}
-              readOnly={true}
-            ></input>
-          </div>
-          <div className="form-group col-4">
-            <label>PRICE (in Ether)</label>
-            <input
-              className="form-control"
-              id="price"
-              type="number"
-              value={price}
-              readOnly
-            ></input>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-4">
-            <label>NAME</label>
-            <input
-              className="form-control"
-              id="name"
-              placeholder="Enter name"
-              value={formData.firstName + " " + formData.lastName}
-            ></input>
-          </div>
-          <div className="form-group col-4">
-            <label> Email</label>
-            <input
-              className="form-control"
-              id="mobile"
-              placeholder="Enter phone number"
-              type="tel"
-              value={formData.emailID}
-            ></input>
-          </div>
-          <div className="form-group col-4">
-            <label>Land Record ID (Like "WXYZ" "ABCD")</label>
-            <div class="form-horizontal">
-              <div class="input-group">
+        <div className="card mt-3">
+          <h5 class="card-header">Personal Detail's</h5>
+          <div class="card-body">
+            <div className="row">
+              <div className="form-group col-4">
+                <label>NAME</label>
                 <input
                   className="form-control"
-                  id="aadharnum"
-                  onChange={(e) => setAadhar(e.target.value)}
+                  id="name"
+                  placeholder="Enter name"
+                  value={formData.firstName + " " + formData.lastName}
+                  readOnly={true}
                 ></input>
-                <span class="input-group-btn bg-secondary">
-                  <button
-                    class="btn btn-default text-white"
-                    type="button"
-                    onClick={getCCHandler}
-                  >
-                    GET CARBON CREDIT
-                  </button>
-                </span>
               </div>
-            </div>
-          </div>
-
-          <div className="form-group col-4">
-            <label>CITY</label>
-            <input
-              className="form-control"
-              id="city"
-              value={formData.city}
-            ></input>
-          </div>
-          <div className="form-group col-4">
-            <label>STATE</label>
-            <select className="form-control" id="state" value={formData.state}>
-              <option disabled="true">---Select State----</option>
-              <option>ANDHRA PRADESH</option>
-              <option>ASSAM</option>
-              <option>BIHAR</option>
-              <option>CHANDIGARH</option>
-              <option>DELHI</option>
-              <option>GOA</option>
-              <option>GUJARAT</option>
-              <option>HARYANA</option>
-              <option>KARNATAKA</option>
-            </select>
-          </div>
-          <div className="form-group col-4">
-            <label>COUNTRY</label>
-            <input
-              className="form-control"
-              id="country"
-              value={formData.country}
-            ></input>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-4">
-            <label>GENDER</label>
-            <select className="form-control" id="gender">
-              <option>Male</option>
-              <option>Female</option>
-            </select>
-          </div>
-          <div className="form-group col-4">
-            <label>META MASK ADDRESS</label>
-            <div class="form-horizontal">
-              <div class="input-group">
+              <div className="form-group col-4">
+                <label> EMAIL</label>
                 <input
-                  type="text"
-                  class="form-control"
-                  value={mma}
-                  id="mmaddress"
-                  onChange={(e) => setMMA(e.target.value)}
+                  className="form-control"
+                  id="mobile"
+                  placeholder="Enter phone number"
+                  type="tel"
+                  value={formData.emailID}
+                  readOnly={true}
                 ></input>
-                <span class="input-group-btn bg-secondary">
-                  <button
-                    class="btn btn-default text-white"
-                    type="button"
-                    onClick={connectMMA}
-                  >
-                    GET MMA
-                  </button>
-                </span>
+              </div>
+
+              <div className="form-group col-4">
+                <label>CITY</label>
+                <input
+                  className="form-control"
+                  id="city"
+                  value={formData.city}
+                  readOnly={true}
+                ></input>
+              </div>
+              <div className="form-group col-4">
+                <label>STATE</label>
+                <select
+                  className="form-control"
+                  id="state"
+                  value={formData.state}
+                  readOnly={true}
+                >
+                  <option disabled="true">---Select State----</option>
+                  <option>ANDHRA PRADESH</option>
+                  <option>ASSAM</option>
+                  <option>BIHAR</option>
+                  <option>CHANDIGARH</option>
+                  <option>DELHI</option>
+                  <option>GOA</option>
+                  <option>GUJARAT</option>
+                  <option>HARYANA</option>
+                  <option>KARNATAKA</option>
+                </select>
+              </div>
+              <div className="form-group col-4">
+                <label>COUNTRY</label>
+                <input
+                  className="form-control"
+                  id="country"
+                  value={formData.country}
+                  readOnly={true}
+                ></input>
+              </div>
+              <div className="form-group col-4 d-none">
+                <label>GENDER</label>
+                <select className="form-control" id="gender" readOnly={true}>
+                  <option value="">--Select--</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
               </div>
             </div>
           </div>
         </div>
-        <div className="form-group w-25 mt-2">
-          <input
-            className="form-control btn btn-success col"
-            type="button"
-            onClick={handleImageGenerate}
-            value="Generate"
-          ></input>
+        {/* Carbon Section */}
+        <div className="card mt-3">
+          <h5 class="card-header">Carbon Credit Detail's</h5>
+          <div class="card-body">
+            <div className="row">
+              <div className="col">
+                <div className="row">
+                  <div className="form-group col-6">
+                    <label forHTML="carbonpoints"> CARBON CREDIT</label>
+                    <input
+                      className="form-control"
+                      id="carbonpoints"
+                      type="number"
+                      placeholder="Enter carbon credit"
+                      onChange={(e) => setCC(e.target.value)}
+                      value={cc}
+                      readOnly={true}
+                    ></input>
+                  </div>
+                  <div className="form-group col-6">
+                    <label>PRICE (in Ether)</label>
+                    <input
+                      className="form-control"
+                      id="price"
+                      type="number"
+                      value={price}
+                      readOnly
+                    ></input>
+                  </div>
+                  <div className="form-group col-6">
+                    <label>LAND RECORD ID (Like "WXYZ" "ABCD")</label>
+                    <div class="form-horizontal">
+                      <div class="input-group">
+                        <input
+                          className="form-control"
+                          id="aadharnum"
+                          value={formData.landrecordID}
+                          onChange={(e) => setAadhar(e.target.value)}
+                        ></input>
+                        <span class="input-group-btn bg-secondary">
+                          <button
+                            class="btn btn-default text-white"
+                            type="button"
+                            onClick={getCCHandler}
+                          >
+                            GET CARBON CREDIT
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group col-6">
+                    <label>META MASK ADDRESS</label>
+                    <div class="form-horizontal">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          class="form-control"
+                          value={mma}
+                          id="mmaddress"
+                          onChange={(e) => setMMA(e.target.value)}
+                        ></input>
+                        <span class="input-group-btn bg-secondary">
+                          <button
+                            class="btn btn-default text-white"
+                            type="button"
+                            onClick={connectMMA}
+                          >
+                            GET MMA
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col col-4">
+                <div className="form-group  mt-2 ">
+                  <input
+                    className="form-control btn btn-success col d-none"
+                    type="button"
+                    onClick={handleImageGenerate}
+                    value="Generate"
+                  ></input>
+                </div>
+
+                <div className="form-group">
+                  <img
+                    src={nftImage}
+                    alt=""
+                    className="col img-thumbnail shadow "
+                    style={{ height: "100%" }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="form-group" style={{ height: "50vh" }}>
-          <img
-            src={nftImage}
-            alt=""
-            className="col img-thumbnail w-25"
-            style={{ height: "100%" }}
-          />
-        </div>
-        {/* <div className="form-group">
-            <label for="formFile" class="form-label">
-              Upload farmer image
-            </label>
-            <input class="form-control" type="file" id="imageFile"></input>
-          </div> */}
         <div className="form-group mt-2">
           <input className="form-control btn btn-success" type="submit"></input>
         </div>

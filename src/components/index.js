@@ -10,5 +10,6 @@ import LoginNewComp from "./LoginNewComp";
 import AccountComp from "./AccountComp";
 import KYCComp from "./KYCComp";
 import KYCAppComp from "./KYCAppComp";
+import KYCNotAppComp from "./KYCNotAppComp";
 
-export {FooterComp,NavBarComp,WelcomeComp,PageNotFound,LoginComp,MarketPlaceComp,TokenOwnerComp, LoaderCustComp,LoginNewComp,AccountComp, KYCComp, KYCAppComp};
+export {FooterComp,NavBarComp,WelcomeComp,PageNotFound,LoginComp,MarketPlaceComp,TokenOwnerComp, LoaderCustComp,LoginNewComp,AccountComp, KYCComp, KYCAppComp, KYCNotAppComp};
