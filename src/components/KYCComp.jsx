@@ -33,6 +33,7 @@ const KYCComp = () => {
       }; 
       axios.post(process.env.REACT_APP_BACKEND_URL + "/checkKYC", inputData, config)
       .then((resp) => {
+        console.log(`Response`)
         if(resp?.data == true){
           setAlertVariant("danger");          
           setShow(true);
@@ -203,7 +204,7 @@ const KYCComp = () => {
           <Form.Control type="file" />
         </Form.Group>
         <Form.Group controlId="formLandRecordID" className="mb-3">
-          <Form.Label>Land Record ID/ IOT Device ID*</Form.Label>
+          <Form.Label>Land Record ID/ IOT Device ID* (like LR1234, LR1111, LR2222)</Form.Label>
           <Form.Control type="text" />
         </Form.Group>
         <Form.Group controlId="wallet" className="mb-3 ">

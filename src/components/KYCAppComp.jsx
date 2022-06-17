@@ -35,7 +35,7 @@ const KYCAppComp = () => {
 
   const handleImageGenerate = async () => {
     const result = await axios.get(
-      `http://localhost:5000/users?aadhar_like=${selectItem.landrecordID}`
+      `http://localhost:5000/users?landrecordid_like=${selectItem.landrecordID}`
     );
     console.log(result);
     setCC(result?.data[0]?.cc);
@@ -61,6 +61,10 @@ const KYCAppComp = () => {
     );
     handleClose();
 
+    //Remove item from Approval page
+    const filterItem = kycItem.filter(item=>item.mma !== selectItem.mma);
+    setKYCItem(filterItem);
+
   }
 
   useEffect(() => {
@@ -74,7 +78,7 @@ const KYCAppComp = () => {
 
   return (
     <>
-      <div>KYC Approval Page</div>
+      <div className="fs-5 fw-bold mt-4 text-center">KYC Approval</div>
       <div className="row p-3">
         {kycItem &&
           kycItem.map((item, index) => (

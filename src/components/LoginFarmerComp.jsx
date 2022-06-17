@@ -155,7 +155,7 @@ const LoginFarmerComp = () => {
 
   const getCCHandler = async () => {
     const result = await axios.get(
-      `http://localhost:5000/users?aadhar_like=${aadhar}`
+      `http://localhost:5000/users?landrecordid_like=${aadhar}`
     );
     console.log(`result ${JSON.stringify(result.data)}`);
     if (Array.isArray(result.data) && result.data.length > 0) {
@@ -286,7 +286,17 @@ const LoginFarmerComp = () => {
                     ></input>
                   </div>
                   <div className="form-group col-6">
-                    <label>LAND RECORD ID (Like "WXYZ" "ABCD")</label>
+                    <label>Reading Time </label>
+                    <input
+                      className="form-control"
+                      id="time"
+                      type="text"
+                      value={new Date(formData?.created)}
+                      readOnly
+                    ></input>
+                  </div>
+                  <div className="form-group col-6">
+                    <label>LAND RECORD ID (Like "LR1234" "LR1111")</label>
                     <div class="form-horizontal">
                       <div class="input-group">
                         <input
