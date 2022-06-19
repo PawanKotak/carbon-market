@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 
 const AccountComp = () => {
   const [userAccount, setUserAccount] = useState("XXXXXXXXXXX");
-  const [useName, setUserName] = useState("Unnamed");
+  const [useName, setUserName] = useState("Pawan Kotak");
   const [key, setKey] = useState("collected");
 
   useEffect(() => {
@@ -36,8 +36,9 @@ const AccountComp = () => {
       </Row>
       <Row>
         <Col className="mx-3 fs-4 fw-lighter">
-          <span className="me-2">
-            <SuitDiamondFill></SuitDiamondFill>
+          <span className="me-2 fs-5 fw-bold">
+            {/* <SuitDiamondFill></SuitDiamondFill> */}
+            USER ADDRESS:
           </span>
           {userAccount}
         </Col>
