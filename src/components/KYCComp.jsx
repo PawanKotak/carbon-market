@@ -217,7 +217,7 @@ const KYCComp = () => {
               value={mma}
               onChange={(e) => setMMA(e.target.value)}
             />
-            <Button variant="secondary" type="button" onClick={connectMMA}>
+            <Button className="d-none" variant="secondary" type="button" onClick={connectMMA}>
               Get Address
             </Button>
           </div>

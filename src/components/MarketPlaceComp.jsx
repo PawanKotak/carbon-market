@@ -78,7 +78,7 @@ const MaketPlaceComp = () => {
         (item) =>
           item.attributes[2]?.value?.toLowerCase() ==
             searchKey?.toLowerCase() ||
-          item.attributes[5]?.value?.toLowerCase() == searchKey?.toLowerCase()
+          item.attributes[4]?.value?.toLowerCase() == searchKey?.toLowerCase()
       );
 
       console.log("filter Item", filterItem);
@@ -116,7 +116,7 @@ const MaketPlaceComp = () => {
                 type="button"
                 onClick={searchHandle}
               >
-                SEARCH (Place/Carbon Credit)
+                Filter (Place/Price)
               </button>
             </span>
           </div>
@@ -135,7 +135,10 @@ const MaketPlaceComp = () => {
               </Card.Body>
               <ListGroup className="list-group-flush">
                 <ListGroupItem>
-                  <b>Carbon Credit</b>: {item?.attributes[5]?.value}
+                  <b>Carbon Credit</b>: {item?.attributes[5]?.value} 
+                </ListGroupItem>
+                <ListGroupItem>
+                  <b>Price</b>: {item?.attributes[4]?.value} (in ether)
                 </ListGroupItem>
                 <ListGroupItem>
                   <b>Place</b>: {item?.attributes[2]?.value}
@@ -191,7 +194,7 @@ const MaketPlaceComp = () => {
                 </ListGroupItem>
                 <ListGroupItem className="form-control row">
                   <span className="col-4">
-                    <b> Address To</b>
+                    <b> Buyer's Wallet Address</b>
                   </span>
                   <input
                     className="col-8"

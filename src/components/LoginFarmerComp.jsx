@@ -61,7 +61,7 @@ const LoginFarmerComp = () => {
                       console.log(`KYC details`, res);
                       setFormData(res.data);
                       setCC(res.data.cc);
-                      setPrice(parseInt(res.data.cc / 10));
+                      setPrice(parseInt(res.data.cc));
                       setNFTImage(res.data.certiimgurl);
                     });
                 }
@@ -161,7 +161,7 @@ const LoginFarmerComp = () => {
     if (Array.isArray(result.data) && result.data.length > 0) {
       console.log("asdf", result.data[0].cc);
       setCC(result.data[0].cc);
-      setPrice(parseInt(result.data[0].cc / 10));
+      setPrice(parseInt(result.data[0].cc ));
     }
   };
 
@@ -264,9 +264,9 @@ const LoginFarmerComp = () => {
               <div className="col">
                 <div className="row">
                   <div className="form-group col-6">
-                    <label forHTML="carbonpoints"> CARBON CREDIT</label>
+                    <label forHTML="carbonpoints"> CARBON CREDIT (in tons)</label>
                     <input
-                      className="form-control"
+                      className="form-control "
                       id="carbonpoints"
                       type="number"
                       placeholder="Enter carbon credit"
@@ -307,7 +307,7 @@ const LoginFarmerComp = () => {
                         ></input>
                         <span class="input-group-btn bg-secondary">
                           <button
-                            class="btn btn-default text-white"
+                            class="btn btn-default text-white d-none"
                             type="button"
                             onClick={getCCHandler}
                           >
@@ -330,7 +330,7 @@ const LoginFarmerComp = () => {
                         ></input>
                         <span class="input-group-btn bg-secondary">
                           <button
-                            class="btn btn-default text-white"
+                            class="btn btn-default text-white d-none"
                             type="button"
                             onClick={connectMMA}
                           >
