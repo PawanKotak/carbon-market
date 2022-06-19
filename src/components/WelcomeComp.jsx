@@ -25,7 +25,7 @@ const WelcomeComp = () => {
                 class="btn btn-outline-secondary w-25 fs-4 fw-bolder"
                 to="/create"
               >
-                Create
+                Sell
               </Link>
             </div>
           </div>

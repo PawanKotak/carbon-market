@@ -1,7 +1,8 @@
 const KYCNotAppComp = () => {
     return ( <>
-    <section className="fs-5 fw-bold mt-5 text-center">Your Registration/KYC details not yet approved. Please wait upto 24 hours after registration!</section>
-    <section className="fs-5 fw-bold mt-5 text-center">After Approval. You will able to sell your registered land carbon credit into marketplace.</section>
+    <section className="fs-3 fw-bold mt-5 text-center text-success ">Congratulation's !!</section>
+    <section className="fs-5 fw-bold mt-2 text-center text-success "> We have received your Land Record details. We will update you shortly for your next NFT Journey</section>
+  
     </> );
 }
  

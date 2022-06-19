@@ -8,6 +8,9 @@ import { useEffect } from "react";
 const config = {
   headers: { "content-type": "multipart/form-data" },
 };
+const configjson = {
+  headers: { "content-type": "application/json" },
+}
 
 const KYCComp = () => {
   const [mma, setMMA] = useState(null);
@@ -17,39 +20,38 @@ const KYCComp = () => {
   const [response, setResponse] = useState();
   const navgiate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      await connectMMA();
 
-    ( async ()=>{
-      setLoading(true); 
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    console.log(accounts);
-    setMMA(accounts[0]);
-
-    if(mma){
-      const inputData = {
-        mma,
-      }; 
-      axios.post(process.env.REACT_APP_BACKEND_URL + "/checkKYC", inputData, config)
-      .then((resp) => {
-        console.log(`Response`)
-        if(resp?.data == true){
-          setAlertVariant("danger");          
-          setShow(true);
-          setResponse("Already registered with same wallet address.")
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err)
-        setLoading(false);
-      })
-    }
-    
-  })();
-
-  },[mma])
+      if (mma !== undefined && mma !== null) {
+        const inputData = {
+          mma,
+        };
+        axios
+          .post(
+            process.env.REACT_APP_BACKEND_URL + "/checkKYC",
+            inputData,
+            configjson
+          )
+          .then((resp) => {
+            console.log(`Response`, resp, inputData);
+            if (resp?.data?.kycrequested == true) {
+              console.log(`Response1`);
+              setAlertVariant("danger");
+              setShow(true);
+              setResponse("Already registered with same wallet address.");
+            }
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoading(false);
+          });
+      }
+    })();
+  }, [mma]);
 
   const connectMMA = async () => {
     const accounts = await window.ethereum.request({
@@ -63,7 +65,7 @@ const KYCComp = () => {
     setLoading(true);
     console.log(`Submit Handler`, event.target.elements);
     event.preventDefault();
-    
+
     const {
       formFirstName,
       formLastName,
@@ -82,17 +84,17 @@ const KYCComp = () => {
     );
 
     const data = new FormData();
-    data.append('firstName',formFirstName.value);
-    data.append('lastName',formLastName.value);
-    data.append('emailID',formEmailID.value);
-    data.append('nationalID',formNationalID.value);
-    data.append('mma',wallet.value);
-    data.append('city',formCity.value);
-    data.append('state',formState.value);
-    data.append('country',formCountry.value);
-    data.append('file',formGovFile.files[0]);
-    data.append('file',formLandFile.files[0]);
-    data.append('landrecordID',formLandRecordID.value);
+    data.append("firstName", formFirstName.value);
+    data.append("lastName", formLastName.value);
+    data.append("emailID", formEmailID.value);
+    data.append("nationalID", formNationalID.value);
+    data.append("mma", wallet.value);
+    data.append("city", formCity.value);
+    data.append("state", formState.value);
+    data.append("country", formCountry.value);
+    data.append("file", formGovFile.files[0]);
+    data.append("file", formLandFile.files[0]);
+    data.append("landrecordID", formLandRecordID.value);
 
     const formdata = {
       firstName: formFirstName.value,
@@ -102,17 +104,13 @@ const KYCComp = () => {
       mma: wallet.value,
       city: formCity.value,
       state: formState.value,
-      country:formCountry.value,
+      country: formCountry.value,
     };
 
     console.log(`form data`, formdata);
 
     axios
-      .post(
-        `${process.env.REACT_APP_BACKEND_URL}/addkycdetails`,
-        data,
-        config
-      )
+      .post(`${process.env.REACT_APP_BACKEND_URL}/addkycdetails`, data, config)
       .then((res) => {
         console.log(`response ${res.toString()}`);
         console.log(res);
@@ -122,7 +120,7 @@ const KYCComp = () => {
         setShow(true);
         window.scrollTo(0, 0); //Move to Top
         setTimeout(() => {
-         navgiate("/create");
+          navgiate("/create");
         }, 10000);
       })
       .catch((err) => {
@@ -153,7 +151,9 @@ const KYCComp = () => {
         <Loading loading background="#ced4daaa" loaderColor="#198754" />
       )}
       <Form className="w-50 mx-auto" onSubmit={submitHandler}>
-        <header className="fs-2 fw-bold">Farmer's Registration Form (KYC) </header>
+        <header className="fs-2 fw-bold">
+          Farmer's Registration Form 
+        </header>
         <Form.Group className="mb-3" controlId="formFirstName">
           <Form.Label>First name *</Form.Label>
           <Form.Control type="text" />
@@ -204,7 +204,9 @@ const KYCComp = () => {
           <Form.Control type="file" />
         </Form.Group>
         <Form.Group controlId="formLandRecordID" className="mb-3">
-          <Form.Label>Land Record ID/ IOT Device ID* (like LR1234, LR1111, LR2222)</Form.Label>
+          <Form.Label>
+            Land Record ID (like LR1234, LR1111, LR2222)
+          </Form.Label>
           <Form.Control type="text" />
         </Form.Group>
         <Form.Group controlId="wallet" className="mb-3 ">

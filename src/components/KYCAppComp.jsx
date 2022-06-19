@@ -78,7 +78,7 @@ const KYCAppComp = () => {
 
   return (
     <>
-      <div className="fs-5 fw-bold mt-4 text-center">KYC Approval</div>
+      <div className="fs-5 fw-bold mt-4 text-center">Approval Request</div>
       <div className="row p-3">
         {kycItem &&
           kycItem.map((item, index) => (
